@@ -8,6 +8,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
+const apiUrl = "http://localhost:9000/transactions";
+
 class Transactions extends React.Component {
   constructor() {
     super();
@@ -15,10 +17,13 @@ class Transactions extends React.Component {
     this.state = {
       transactions: []
     };
+
+    this.onDelete = this.onDelete.bind(this);
   }
 
   componentDidMount() {
-    fetch("http://localhost:9000/transactions")
+    // Get transactions
+    fetch(apiUrl)
       .then(response => response.json())
       .then(data =>
         this.setState({
@@ -30,27 +35,63 @@ class Transactions extends React.Component {
       });
   }
 
+  onDelete(id, i) {
+    // Delete transaction by id
+    fetch(`${apiUrl}/${id}`, {
+      method: "delete"
+    })
+      .then(response => response.json())
+      .then(() => {
+        var newTransactions = [...this.state.transactions]; // Create copy of transactions
+        newTransactions.splice(i, 1); // Remove deleted transaction
+        this.setState({ transactions: newTransactions }); // Set state to new transactions
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  calculateTotal() {
+    var sum = 0;
+    for (var i = 0; i < this.state.transactions.length; i++) {
+      if (this.state.transactions[i].isSpending) {
+        sum += this.state.transactions[i].amount;
+      } else {
+        sum -= this.state.transactions[i].amount;
+      }
+    }
+    return sum;
+  }
+
   render() {
     return (
       <div>
         <h2>Transactions</h2>
+        <div>
+          <h3>Total spending: {this.calculateTotal()}</h3>
+        </div>
         <TableContainer component={Paper}>
           <Table className={makeStyles.table} aria-label="transactions table">
             <TableHead>
               <TableRow>
                 <TableCell>Date</TableCell>
-                <TableCell align="right">Description</TableCell>
-                <TableCell alight="right">Amount</TableCell>
+                <TableCell align="left">Description</TableCell>
+                <TableCell align="left">Amount</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.transactions.map(data => (
-                <TableRow key={data.id}>
+              {this.state.transactions.map((data, i) => (
+                <TableRow key={i}>
                   <TableCell component="th" scope="row">
-                    {data.date}
+                    {data.date.substring(0, 10)}
                   </TableCell>
-                  <TableCell align="right">{data.description}</TableCell>
-                  <TableCell alight="right">{data.amount}</TableCell>
+                  <TableCell align="left">{data.description}</TableCell>
+                  <TableCell align="left">{data.amount}</TableCell>
+                  <TableCell align="left">
+                    <button onClick={() => this.onDelete(data._id, i)}>
+                      Delete
+                    </button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
