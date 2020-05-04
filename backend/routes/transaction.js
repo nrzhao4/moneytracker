@@ -12,7 +12,7 @@ router.route("/").get((req, res) => {
 router.route("/").post((req, res) => {
   const date = Date.parse(req.body.date);
   const description = req.body.description;
-  const amount = req.body.amount;
+  const amount = Number(req.body.amount);
   const isSpending = req.body.isSpending;
 
   const newTransaction = new Transaction({
