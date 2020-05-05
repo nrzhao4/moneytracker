@@ -63,16 +63,18 @@ class AddTransaction extends React.Component {
   render() {
     return (
       <div>
-        <h3>Add a transaction</h3>
         <form onSubmit={this.onSubmit}>
-          <div>
+          <div className="form-group">
+            <h3>New Transaction</h3>
+          </div>
+          <div className="form-group">
             <label>Date: </label>
             <DatePicker
               selected={this.state.date}
               onChange={this.onChangeDate}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Description: </label>
             <input
               type="text"
@@ -80,7 +82,7 @@ class AddTransaction extends React.Component {
               onChange={this.onChangeDescription}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>
               Amount (enter a NEGATIVE number if you SPENT money, POSITIVE if
               you GAINED money):{" "}
@@ -91,7 +93,7 @@ class AddTransaction extends React.Component {
               onChange={this.onChangeAmount}
             />
           </div>
-          <div>
+          <div className="form-group">
             <input type="submit" value="Add this transaction" />
           </div>
         </form>
