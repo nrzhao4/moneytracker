@@ -43,18 +43,17 @@ class AddTransaction extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
+    var spending = false;
 
-    if (this.state.amount > 0) {
-      this.setState({
-        isSpending: true
-      });
+    if (Math.sign(this.state.amount) === -1) {
+      spending = true;
     }
 
     const transaction = {
       date: this.state.date,
       description: this.state.description,
       amount: this.state.amount,
-      isSpending: this.state.isSpending
+      isSpending: spending
     };
 
     this.props.onAddTransaction(transaction);
