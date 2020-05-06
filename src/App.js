@@ -79,21 +79,27 @@ class App extends React.Component {
   render() {
     console.log(this.state);
     return (
-      <div className="container">
-        <div className="add-transaction">
-          {this.state.showAddTransaction ? (
-            <AddTransaction onAddTransaction={this.onAddTransaction} />
-          ) : (
-            <button onClick={this.onAddButtonClick} className="button-primary">
-              Add Transaction
-            </button>
-          )}
-        </div>
-        <div className="transaction-table">
-          <Transactions
-            transactions={this.state.transactions}
-            onDelete={this.onDeleteTransaction}
-          />
+      <div>
+        <div className="container">
+          <div className="add-transaction">
+            <h1>Centsational Savings</h1>
+            {this.state.showAddTransaction ? (
+              <AddTransaction onAddTransaction={this.onAddTransaction} />
+            ) : (
+              <button
+                onClick={this.onAddButtonClick}
+                className="button-primary"
+              >
+                Add Transaction
+              </button>
+            )}
+          </div>
+          <div className="transaction-table">
+            <Transactions
+              transactions={this.state.transactions}
+              onDelete={this.onDeleteTransaction}
+            />
+          </div>
         </div>
       </div>
     );
