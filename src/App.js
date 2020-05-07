@@ -1,8 +1,8 @@
 import React from "react";
 import Transactions from "./components/Transactions";
 import AddTransaction from "./components/AddTransaction";
+import EditTransaction from "./components/EditTransaction";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 
 const apiUrl = "http://localhost:9000/transactions";
 
@@ -13,14 +13,15 @@ class App extends React.Component {
     this.state = {
       transactions: [],
       showAddTransaction: false,
-      id: 1,
-      uuid: 0
+      showEditTransaction: false
     };
 
     this.onAddButtonClick = this.onAddButtonClick.bind(this);
     this.onAddTransaction = this.onAddTransaction.bind(this);
     this.getTransactions = this.getTransactions.bind(this);
     this.onDeleteTransaction = this.onDeleteTransaction.bind(this);
+    this.onEditTransaction = this.onEditTransaction.bind(this);
+    this.onCancelEdit = this.onCancelEdit.bind(this);
   }
 
   componentDidMount() {
@@ -52,8 +53,7 @@ class App extends React.Component {
   async onAddTransaction(transaction) {
     await axios.post(apiUrl, transaction).then(
       this.setState(prevState => ({
-        showAddTransaction: !prevState.showAddTransaction,
-        uuid: uuidv4()
+        showAddTransaction: !prevState.showAddTransaction
       }))
     );
     this.getTransactions();
@@ -76,7 +76,34 @@ class App extends React.Component {
     this.getTransactions();
   }
 
+  onEditTransaction(id) {
+    fetch(`${apiUrl}/${id}`)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          showEditTransaction: true,
+          transactionToEdit: {
+            date: data.date,
+            description: data.description,
+            amount: data.amount,
+            isSpending: data.isSpending
+          }
+        });
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
+
+  onCancelEdit() {
+    this.setState({
+      showEditTransaction: false,
+      transactionToEdit: {}
+    });
+  }
+
   render() {
+    console.log(this.state);
     return (
       <div>
         <div className="container">
@@ -94,9 +121,16 @@ class App extends React.Component {
             )}
           </div>
           <div className="transaction-table">
+            {this.state.showEditTransaction ? (
+              <EditTransaction
+                transaction={this.state.transactionToEdit}
+                onCancelEdit={this.onCancelEdit}
+              />
+            ) : null}
             <Transactions
               transactions={this.state.transactions}
               onDelete={this.onDeleteTransaction}
+              onEdit={this.onEditTransaction}
             />
           </div>
         </div>

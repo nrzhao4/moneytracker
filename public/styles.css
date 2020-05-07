@@ -24,19 +24,37 @@ input {
   font-size: 16px;
 }
 
+.flexrow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .button-primary {
   padding: 8px;
   font-size: 16px;
-  color: #dfe0dc;
+  color: white;
   background-color: #840032;
   border-radius: 4px;
   border-color: #840032;
   width: 100%;
 }
 
+.button-secondary {
+  padding: 8px;
+  font-size: 16px;
+  color: #840032;
+  background-color: white;
+  border-radius: 4px;
+  border-color: #840032;
+  border-width: 1px;
+  width: 100%;
+}
+
 .container {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
 }
 
 .add-transaction {

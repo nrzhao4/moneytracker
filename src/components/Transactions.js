@@ -49,6 +49,7 @@ function Transactions(props) {
                   <button onClick={() => props.onDelete(data._id, i)}>
                     Delete
                   </button>
+                  <button onClick={() => props.onEdit(data._id)}>Edit</button>
                 </TableCell>
               </TableRow>
             ))}
