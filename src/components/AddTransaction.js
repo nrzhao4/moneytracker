@@ -11,7 +11,7 @@ class AddTransaction extends React.Component {
       date: new Date(),
       description: "",
       amount: 0,
-      isSpending: false
+      isSpending: false,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -23,21 +23,21 @@ class AddTransaction extends React.Component {
   onChangeDate(date) {
     this.setState({
       ...this.state,
-      date: date
+      date: date,
     });
   }
 
   onChangeDescription(e) {
     this.setState({
       ...this.state,
-      description: e.target.value
+      description: e.target.value,
     });
   }
 
   onChangeAmount(e) {
     this.setState({
       ...this.state,
-      amount: e.target.value
+      amount: e.target.value,
     });
   }
 
@@ -53,7 +53,7 @@ class AddTransaction extends React.Component {
       date: this.state.date,
       description: this.state.description,
       amount: this.state.amount,
-      isSpending: spending
+      isSpending: spending,
     };
 
     this.props.onAddTransaction(transaction);

@@ -8,10 +8,11 @@ class EditTransaction extends React.Component {
     super(props);
 
     this.state = {
+      id: this.props.transaction.id,
       date: new Date(),
-      description: "",
-      amount: 0,
-      isSpending: false
+      description: this.props.transaction.description,
+      amount: this.props.transaction.amount,
+      isSpending: this.props.transaction.isSpending,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -23,21 +24,21 @@ class EditTransaction extends React.Component {
   onChangeDate(date) {
     this.setState({
       ...this.state,
-      date: date
+      date: date,
     });
   }
 
   onChangeDescription(e) {
     this.setState({
       ...this.state,
-      description: e.target.value
+      description: e.target.value,
     });
   }
 
   onChangeAmount(e) {
     this.setState({
       ...this.state,
-      amount: e.target.value
+      amount: e.target.value,
     });
   }
 
@@ -53,10 +54,10 @@ class EditTransaction extends React.Component {
       date: this.state.date,
       description: this.state.description,
       amount: this.state.amount,
-      isSpending: spending
+      isSpending: spending,
     };
 
-    this.props.onAddTransaction(transaction);
+    this.props.onSubmitEdit(this.state.id, transaction);
   }
 
   render() {
@@ -77,7 +78,7 @@ class EditTransaction extends React.Component {
             <label>Description: </label>
             <input
               type="text"
-              value={this.props.description}
+              value={this.state.description}
               onChange={this.onChangeDescription}
             />
           </div>
@@ -88,7 +89,7 @@ class EditTransaction extends React.Component {
             </label>
             <input
               type="text"
-              value={this.props.amount}
+              value={this.state.amount}
               onChange={this.onChangeAmount}
             />
           </div>
@@ -97,11 +98,11 @@ class EditTransaction extends React.Component {
               <div
                 style={{
                   width: "50%",
-                  margin: "4px"
+                  margin: "4px",
                 }}
               >
                 <button
-                  onClick={this.props.onCancelEdit}
+                  onClick={this.state.onCancelEdit}
                   className="button-secondary"
                 >
                   Cancel
