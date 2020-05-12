@@ -3,15 +3,16 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-class AddTransaction extends React.Component {
+class EditTransaction extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      id: this.props.transaction.id,
       date: new Date(),
-      description: "",
-      amount: 0,
-      isSpending: false,
+      description: this.props.transaction.description,
+      amount: this.props.transaction.amount,
+      isSpending: this.props.transaction.isSpending,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -56,7 +57,7 @@ class AddTransaction extends React.Component {
       isSpending: spending,
     };
 
-    this.props.onAddTransaction(transaction);
+    this.props.onSubmitEdit(this.state.id, transaction);
   }
 
   render() {
@@ -64,7 +65,7 @@ class AddTransaction extends React.Component {
       <div>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
-            <h3>New Transaction</h3>
+            <h3>Edit Transaction</h3>
           </div>
           <div className="form-group">
             <label>Date: </label>
@@ -93,11 +94,24 @@ class AddTransaction extends React.Component {
             />
           </div>
           <div className="form-group">
-            <input
-              type="submit"
-              value="Add this transaction"
-              className="button-primary"
-            />
+            <div className="flexrow">
+              <div
+                style={{
+                  width: "50%",
+                  margin: "4px",
+                }}
+              >
+                <button
+                  onClick={this.state.onCancelEdit}
+                  className="button-secondary"
+                >
+                  Cancel
+                </button>
+              </div>
+              <div style={{ width: "50%", margin: "8px" }}>
+                <input type="submit" value="Done" className="button-primary" />
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -105,4 +119,4 @@ class AddTransaction extends React.Component {
   }
 }
 
-export default AddTransaction;
+export default EditTransaction;

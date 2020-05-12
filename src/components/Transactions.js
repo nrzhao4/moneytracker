@@ -8,6 +8,22 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
+function spending(amount) {
+  return (
+    <TableCell align="left" style={{ color: "red" }}>
+      ${amount * -1}
+    </TableCell>
+  );
+}
+
+function saving(amount) {
+  return (
+    <TableCell align="left" style={{ color: "green" }}>
+      ${amount}
+    </TableCell>
+  );
+}
+
 function Transactions(props) {
   return (
     <div>
@@ -28,10 +44,21 @@ function Transactions(props) {
                   {data.date.substring(0, 10)}
                 </TableCell>
                 <TableCell align="left">{data.description}</TableCell>
-                <TableCell align="left">{data.amount}</TableCell>
+                {data.isSpending ? spending(data.amount) : saving(data.amount)}
                 <TableCell align="left">
-                  <button onClick={() => props.onDelete(data._id, i)}>
+                  <button
+                    className="button-secondary"
+                    style={{ width: "40%", margin: "4px" }}
+                    onClick={() => props.onDelete(data._id, i)}
+                  >
                     Delete
+                  </button>
+                  <button
+                    className="button-secondary"
+                    style={{ width: "40%", margin: "4px" }}
+                    onClick={() => props.onEdit(data._id)}
+                  >
+                    Edit
                   </button>
                 </TableCell>
               </TableRow>

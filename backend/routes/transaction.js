@@ -28,6 +28,30 @@ router.route("/").post((req, res) => {
     .catch(err => res.status(400).json("Error: " + err));
 });
 
+// GET one transaction
+router.route("/:id").get((req, res) => {
+  Transaction.findById(req.params.id)
+    .then(transaction => res.json(transaction))
+    .catch(err => res.status(400).json("Error: " + err));
+});
+
+// Edit trasaction
+router.route("/:id").put((req, res) => {
+  Transaction.findById(req.params.id)
+    .then(transaction => {
+      transaction.date = req.body.date;
+      transaction.description = req.body.description;
+      transaction.amount = req.body.amount;
+      transaction.isSpending = req.body.isSpending;
+
+      transaction
+        .save()
+        .then(() => res.json("Transaction updated!"))
+        .catch(err => res.status(400).json("Error: " + err));
+    })
+    .catch(err => res.status(400).json("Error: " + err));
+});
+
 // DELETE transaction
 router.route("/:id").delete((req, res) => {
   Transaction.findByIdAndDelete(req.params.id)
