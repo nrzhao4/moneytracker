@@ -21,7 +21,7 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 // Connect to MongoDB database
-const uri = require("./config/keys").mongoURI;
+const uri = process.env.ATLAS_URI;
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((err) => {
