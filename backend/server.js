@@ -35,7 +35,7 @@ connection.once("open", () => {
 // Routes
 const transactionRouter = require("./routes/transaction");
 const usersRouter = require("./routes/users");
-app.use("/transactions", transactionRouter);
-app.use("/users", usersRouter);
+app.use("/api/transactions", transactionRouter);
+app.use("/api/users", usersRouter);
 
 app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
