@@ -5,41 +5,42 @@ class Landing extends Component {
     return (
       <div style={{ height: "75vh" }} className="container valign-wrapper">
         <div className="row">
-          <div className="col s12 center-align">
+          <div className="col s12">
             <h4>
-              <b>Build</b> a login/auth app with the{" "}
-              <span style={{ fontFamily: "monospace" }}>MERN</span> stack from
-              scratch
+              Welcome to {}
+              <span style={{ fontFamily: "Pacifico" }}>
+                Centsational Savings
+              </span>
             </h4>
             <p className="flow-text grey-text text-darken-1">
-              Create a (minimal) full-stack app with user authentication via
-              passport and JWTs
+              Track your expenses and start building your savings - one cent at
+              a time
             </p>
             <br />
-            <div className="col s6">
+            <div className="col s4">
               <Link
                 to="/register"
                 style={{
-                  width: "140px",
-                  borderRadius: "3px",
+                  width: "210px",
+                  borderRadius: "12px",
                   letterSpacing: "1.5px",
                 }}
-                className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+                className="btn btn-large waves-effect waves-light hoverable pink darken-3"
               >
-                Register
+                Start Saving
               </Link>
             </div>
-            <div className="col s6">
+            <div className="col s4">
               <Link
                 to="/signin"
                 style={{
-                  width: "140px",
-                  borderRadius: "3px",
+                  width: "210px",
+                  borderRadius: "12px",
                   letterSpacing: "1.5px",
                 }}
-                className="btn btn-large btn-flat waves-effect white black-text"
+                className="btn btn-large waves-light teal lighten-4 black-text"
               >
-                Log In
+                Sign In
               </Link>
             </div>
           </div>

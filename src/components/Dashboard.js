@@ -1,38 +1,152 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { logoutUser } from "../actions/authActions";
+import React from "react";
+import Transactions from "./TransactionsTable";
+import AddTransaction from "./AddTransaction";
+import EditTransaction from "./EditTransaction";
+import axios from "axios";
 
-class Dashboard extends Component {
-  onLogoutClick = (e) => {
-    e.preventDefault();
-    this.props.logoutUser();
-  };
+const apiUrl = "http://localhost:9000/transactions";
+
+class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      transactions: [],
+      showAddTransaction: false,
+      showEditTransaction: false,
+    };
+
+    this.onAddButtonClick = this.onAddButtonClick.bind(this);
+    this.onAddTransaction = this.onAddTransaction.bind(this);
+    this.getTransactions = this.getTransactions.bind(this);
+    this.onDeleteTransaction = this.onDeleteTransaction.bind(this);
+    this.onEditTransaction = this.onEditTransaction.bind(this);
+    this.onCancelEdit = this.onCancelEdit.bind(this);
+    this.onSubmitEdit = this.onSubmitEdit.bind(this);
+  }
+
+  componentDidMount() {
+    this.getTransactions();
+  }
+
+  // Get transactions from the API
+  getTransactions() {
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) =>
+        this.setState({
+          transactions: data,
+        })
+      )
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
+
+  // Show add transaction modal when clicked
+  onAddButtonClick() {
+    this.setState((prevState) => ({
+      showAddTransaction: !prevState.showAddTransaction,
+    }));
+  }
+
+  // Post the new transaction, get transactions from API to update table
+  async onAddTransaction(transaction) {
+    await axios.post(apiUrl, transaction).then(
+      this.setState((prevState) => ({
+        showAddTransaction: !prevState.showAddTransaction,
+      }))
+    );
+    this.getTransactions();
+  }
+
+  onDeleteTransaction(id, i) {
+    // Delete transaction by id
+    fetch(`${apiUrl}/${id}`, {
+      method: "delete",
+    })
+      .then((response) => response.json())
+      .then(() => {
+        var newTransactions = [...this.state.transactions]; // Create copy of transactions
+        newTransactions.splice(i, 1); // Remove deleted transaction
+        this.setState({ transactions: newTransactions }); // Set state to new transactions
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    this.getTransactions();
+  }
+
+  // When user clicks the Edit button
+  onEditTransaction(id) {
+    fetch(`${apiUrl}/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({
+          showEditTransaction: true,
+          transactionToEdit: {
+            id: id,
+            date: data.date,
+            description: data.description,
+            amount: data.amount,
+            isSpending: data.isSpending,
+          },
+        });
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
+
+  // When user finishes editing a transaction
+  async onSubmitEdit(id, transaction) {
+    await axios.put(`${apiUrl}/${id}`, transaction).then(
+      this.setState((prevState) => ({
+        showEditTransaction: false,
+        transactionToEdit: {},
+      }))
+    );
+    this.getTransactions();
+  }
+
+  onCancelEdit() {
+    this.setState({
+      showEditTransaction: false,
+      transactionToEdit: {},
+    });
+  }
+
   render() {
-    const { user } = this.props.auth;
+    console.log(this.state);
     return (
-      <div style={{ height: "75vh" }} className="container valign-wrapper">
-        <div className="row">
-          <div className="col s12 center-align">
-            <h4>
-              <b>Hey there,</b> {user.name.split(" ")[0]}
-              <p className="flow-text grey-text text-darken-1">
-                You are logged into a full-stack{" "}
-                <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
-              </p>
-            </h4>
-            <button
-              style={{
-                width: "150px",
-                borderRadius: "3px",
-                letterSpacing: "1.5px",
-                marginTop: "1rem",
-              }}
-              onClick={this.onLogoutClick}
-              className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-            >
-              Logout
-            </button>
+      <div>
+        <div className="container">
+          <div className="add-transaction">
+            <h1>Centsational Savings</h1>
+            {this.state.showAddTransaction ? (
+              <AddTransaction onAddTransaction={this.onAddTransaction} />
+            ) : (
+              <button
+                onClick={this.onAddButtonClick}
+                className="button-primary"
+              >
+                Add Transaction
+              </button>
+            )}
+          </div>
+          <div className="transaction-table">
+            {this.state.showEditTransaction ? (
+              <EditTransaction
+                transaction={this.state.transactionToEdit}
+                onCancelEdit={this.onCancelEdit}
+                onSubmitEdit={this.onSubmitEdit}
+              />
+            ) : null}
+            <Transactions
+              transactions={this.state.transactions}
+              onDelete={this.onDeleteTransaction}
+              onEdit={this.onEditTransaction}
+            />
           </div>
         </div>
       </div>
@@ -40,13 +154,4 @@ class Dashboard extends Component {
   }
 }
 
-Dashboard.propTypes = {
-  logoutUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-
-export default connect(mapStateToProps, { logoutUser })(Dashboard);
+export default App;

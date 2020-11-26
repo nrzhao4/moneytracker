@@ -51,17 +51,20 @@ class RegisterUser extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col s8 offset-s2">
+          <div className="col s10 offset-s1">
             <Link to="/" className="btn-flat waves-effect">
               <i className="material-icons left">keyboard_backspace</i> Back to
               home
             </Link>
             <div className="col s12" style={{ paddingLeft: "11.250px" }}>
               <h4>
-                <b>Register</b> below
+                <b>Create an account</b>
               </h4>
               <p className="grey-text text-darken-1">
-                Already have an account? <Link to="/signin">Log in</Link>
+                Already have an account?{" "}
+                <Link to="/signin" className="pink-text darken-3">
+                  Log in
+                </Link>
               </p>
             </div>
             <form noValidate onSubmit={this.onSubmit}>
@@ -125,12 +128,12 @@ class RegisterUser extends Component {
                 <button
                   style={{
                     width: "150px",
-                    borderRadius: "3px",
+                    borderRadius: "12px",
                     letterSpacing: "1.5px",
                     marginTop: "1rem",
                   }}
                   type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+                  className="btn btn-large waves-effect waves-light hoverable pink darken-3"
                 >
                   Sign up
                 </button>
