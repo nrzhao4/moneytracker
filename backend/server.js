@@ -19,6 +19,9 @@ connection.once("open", () => {
 });
 
 const transactionRouter = require("./routes/transaction");
-app.use("/transactions", transactionRouter);
+app.use("/api/transactions", transactionRouter);
+
+const budgetRouter = require("./routes/budget");
+app.use("/api/budgets", budgetRouter);
 
 app.listen(port, () => console.log(`Listening at http://localhost:${port}`));

@@ -4,7 +4,7 @@ import AddTransaction from "./components/AddTransaction";
 import EditTransaction from "./components/EditTransaction";
 import axios from "axios";
 
-const apiUrl = "http://localhost:9000/transactions";
+const apiUrl = "http://localhost:9000/api/transactions";
 
 class App extends React.Component {
   constructor() {
