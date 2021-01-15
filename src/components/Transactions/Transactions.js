@@ -27,7 +27,6 @@ function saving(amount) {
 function Transactions(props) {
   return (
     <div>
-      <h2>Transactions</h2>
       <TableContainer component={Paper}>
         <Table className={makeStyles.table} aria-label="transactions table">
           <TableHead>
