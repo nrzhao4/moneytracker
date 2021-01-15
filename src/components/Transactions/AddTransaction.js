@@ -10,7 +10,7 @@ class AddTransaction extends React.Component {
     this.state = {
       date: new Date(),
       description: "",
-      amount: 0,
+      amount: "",
       isSpending: false,
     };
 

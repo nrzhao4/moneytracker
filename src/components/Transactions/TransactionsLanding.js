@@ -121,7 +121,6 @@ class TransactionsLanding extends React.Component {
       <div>
         <div className="container">
           <div className="add-transaction">
-            <h1>Centsational Savings</h1>
             {this.state.showAddTransaction ? (
               <AddTransaction onAddTransaction={this.onAddTransaction} />
             ) : (
