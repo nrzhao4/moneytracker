@@ -9,16 +9,18 @@ class EditTransaction extends React.Component {
 
     this.state = {
       id: this.props.transaction.id,
-      date: new Date(),
+      date: this.props.date,
       description: this.props.transaction.description,
       amount: this.props.transaction.amount,
       isSpending: this.props.transaction.isSpending,
+      transactionType: "spending",
     };
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeAmount = this.onChangeAmount.bind(this);
+    this.onChangeTransactionType = this.onChangeTransactionType.bind(this);
   }
 
   onChangeDate(date) {
@@ -42,14 +44,19 @@ class EditTransaction extends React.Component {
     });
   }
 
+  onChangeTransactionType(e) {
+    this.setState({
+      ...this.state,
+      transactionType: e.target.value,
+    });
+  }
+
   onSubmit(e) {
     e.preventDefault();
     var spending = false;
-
-    if (Math.sign(this.state.amount) === -1) {
+    if (this.state.transactionType == "spending") {
       spending = true;
     }
-
     const transaction = {
       date: this.state.date,
       description: this.state.description,
@@ -62,55 +69,65 @@ class EditTransaction extends React.Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <h3>Edit Transaction</h3>
+      <div className="row">
+        <form className="col s6 offset-s2" onSubmit={this.onSubmit}>
+          <div className="row">
+            <h5>Edit Transaction</h5>
           </div>
-          <div className="form-group">
-            <label>Date: </label>
-            <DatePicker
-              selected={this.state.date}
-              onChange={this.onChangeDate}
-            />
+          <div className="row">
+            <div className="col s12">
+              <label>Date: </label>
+              <DatePicker
+                selected={this.state.date}
+                onChange={this.onChangeDate}
+                openToDate={this.state.date}
+              />
+            </div>
           </div>
-          <div className="form-group">
-            <label>Description: </label>
-            <input
-              type="text"
-              value={this.state.description}
-              onChange={this.onChangeDescription}
-            />
+          <div className="row">
+            <div className="input-field col s12">
+              <label>Description: </label>
+              <input
+                type="text"
+                value={this.state.description}
+                onChange={this.onChangeDescription}
+              />
+            </div>
           </div>
-          <div className="form-group">
-            <label>
-              Amount (enter a NEGATIVE number if you SPENT money, POSITIVE if
-              you GAINED money):{" "}
-            </label>
-            <input
-              type="text"
-              value={this.state.amount}
-              onChange={this.onChangeAmount}
-            />
-          </div>
-          <div className="form-group">
-            <div className="flexrow">
-              <div
-                style={{
-                  width: "50%",
-                  margin: "4px",
-                }}
+          <div className="row">
+            <label>Transaction type</label>
+            <div className="input-field col s12">
+              <select
+                className="browser-default"
+                value={this.state.transactionType}
+                onChange={this.onChangeTransactionType}
               >
-                <button
-                  onClick={this.state.onCancelEdit}
-                  className="button-secondary"
-                >
-                  Cancel
-                </button>
-              </div>
-              <div style={{ width: "50%", margin: "8px" }}>
-                <input type="submit" value="Done" className="button-primary" />
-              </div>
+                <option value="spending">Spending</option>
+                <option value="saving">Saving</option>
+              </select>
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col s12">
+              <label>Amount</label>
+              <input
+                type="text"
+                value={this.state.amount}
+                onChange={this.onChangeAmount}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col s12">
+              <button
+                className="button-secondary"
+                onClick={this.props.onCancelEdit}
+              >
+                Cancel
+              </button>
+              <button className="button-primary" onClick={this.onSubmit}>
+                Add this transaction
+              </button>
             </div>
           </div>
         </form>

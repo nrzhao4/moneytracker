@@ -13,6 +13,7 @@ class TransactionsLanding extends React.Component {
       transactions: [],
       showAddTransaction: false,
       showEditTransaction: false,
+      showTransactionTable: true,
     };
 
     this.onAddButtonClick = this.onAddButtonClick.bind(this);
@@ -46,6 +47,7 @@ class TransactionsLanding extends React.Component {
   onAddButtonClick() {
     this.setState((prevState) => ({
       showAddTransaction: !prevState.showAddTransaction,
+      showTransactionTable: false,
     }));
   }
 
@@ -54,6 +56,7 @@ class TransactionsLanding extends React.Component {
     await axios.post(apiUrl, transaction).then(
       this.setState((prevState) => ({
         showAddTransaction: !prevState.showAddTransaction,
+        showTransactionTable: !prevState.showTransactionTable,
       }))
     );
     this.getTransactions();
@@ -83,6 +86,8 @@ class TransactionsLanding extends React.Component {
       .then((data) => {
         this.setState({
           showEditTransaction: true,
+          showAddTransaction: false,
+          showTransactionTable: false,
           transactionToEdit: {
             id: id,
             date: data.date,
@@ -102,6 +107,8 @@ class TransactionsLanding extends React.Component {
     await axios.put(`${apiUrl}/${id}`, transaction).then(
       this.setState((prevState) => ({
         showEditTransaction: false,
+        showTransactionTable: true,
+        showAddTransaction: false,
         transactionToEdit: {},
       }))
     );
@@ -111,6 +118,8 @@ class TransactionsLanding extends React.Component {
   onCancelEdit() {
     this.setState({
       showEditTransaction: false,
+      showAddTransaction: false,
+      showTransactionTable: true,
       transactionToEdit: {},
     });
   }
@@ -118,21 +127,25 @@ class TransactionsLanding extends React.Component {
   render() {
     console.log(this.state);
     return (
-      <div>
-        <div className="container">
-          <div className="add-transaction">
+      <div className="row">
+        <div className="col s10 offset-s1">
+          <h3>Your Transactions</h3>
+          {!this.state.showAddTransaction && !this.state.showEditTransaction ? (
+            <button
+              onClick={this.onAddButtonClick}
+              className="button-primary"
+              style={{ width: "50%%" }}
+            >
+              Add Transaction
+            </button>
+          ) : null}
+          <div className="card">
             {this.state.showAddTransaction ? (
-              <AddTransaction onAddTransaction={this.onAddTransaction} />
-            ) : (
-              <button
-                onClick={this.onAddButtonClick}
-                className="button-primary"
-              >
-                Add Transaction
-              </button>
-            )}
-          </div>
-          <div className="transaction-table">
+              <AddTransaction
+                onAddTransaction={this.onAddTransaction}
+                onCancelEdit={this.onCancelEdit}
+              />
+            ) : null}
             {this.state.showEditTransaction ? (
               <EditTransaction
                 transaction={this.state.transactionToEdit}
@@ -140,11 +153,15 @@ class TransactionsLanding extends React.Component {
                 onSubmitEdit={this.onSubmitEdit}
               />
             ) : null}
-            <Transactions
-              transactions={this.state.transactions}
-              onDelete={this.onDeleteTransaction}
-              onEdit={this.onEditTransaction}
-            />
+          </div>
+          <div className="transaction-table">
+            {this.state.showTransactionTable ? (
+              <Transactions
+                transactions={this.state.transactions}
+                onDelete={this.onDeleteTransaction}
+                onEdit={this.onEditTransaction}
+              />
+            ) : null}
           </div>
         </div>
       </div>
