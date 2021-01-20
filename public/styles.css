@@ -3,16 +3,6 @@ body {
   color: #000022;
 }
 
-h1 {
-  font-family: "Pacifico", cursive;
-  font-size: 24px;
-}
-
-h2 {
-  color: #e59500;
-  text-align: right;
-}
-
 label {
   font-size: 16px;
 }
@@ -28,6 +18,7 @@ input {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
 }
 
 .button-primary {
@@ -35,9 +26,8 @@ input {
   font-size: 16px;
   color: white;
   background-color: #840032;
-  border-radius: 4px;
+  border-radius: 8px;
   border-color: #840032;
-  width: 100%;
 }
 
 .button-secondary {
@@ -48,28 +38,16 @@ input {
   border-radius: 4px;
   border-color: #840032;
   border-width: 1px;
-  width: 100%;
 }
 
 .container {
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
-}
-
-.add-transaction {
-  width: 25%;
-  padding: 8px;
-  height: 100%;
-  border-radius: 2px;
-  margin-right: 4px;
 }
 
 .transaction-table {
   flex-grow: 1;
   padding: 8px;
-  border-radius: 2px;
-  box-shadow: 0 0 1px 1px #666666;
   margin-left: 4px;
 }
 

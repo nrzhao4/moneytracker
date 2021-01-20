@@ -11,7 +11,7 @@ import Paper from "@material-ui/core/Paper";
 function spending(amount) {
   return (
     <TableCell align="left" style={{ color: "red" }}>
-      ${amount * -1}
+      ${amount}
     </TableCell>
   );
 }

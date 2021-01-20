@@ -100,7 +100,7 @@ class BudgetsLanding extends Component {
     transactions.forEach((transaction) => {
       spent += transaction.amount;
     });
-    const remaining = amount + spent;
+    const remaining = amount - spent;
     return remaining;
   }
 

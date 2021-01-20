@@ -19,6 +19,7 @@ class AddBudget extends Component {
     this.onChangeBudgetType = this.onChangeBudgetType.bind(this);
     this.onChangeAmount = this.onChangeAmount.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onCancel = this.onCancel.bind(this);
   }
 
   onChangeBudgetName(e) {
@@ -63,6 +64,12 @@ class AddBudget extends Component {
         redirect: "/budgets",
       })
     );
+  }
+
+  onCancel() {
+    this.setState({
+      redirect: "/budgets",
+    });
   }
 
   render() {
@@ -117,6 +124,12 @@ class AddBudget extends Component {
                 <label htmlFor="amount">Amount</label>
               </div>
             </div>
+            <button
+              className="btn waves-effect waves-light"
+              onClick={this.onCancel}
+            >
+              Cancel
+            </button>
             <button
               className="btn waves-effect waves-light"
               onClick={this.onSubmit}
